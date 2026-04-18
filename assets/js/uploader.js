@@ -46,8 +46,20 @@ document.addEventListener('DOMContentLoaded', () => {
         handleFiles(files);
     }
 
-    // Handle file selection via input (if we add a generic upload button later)
-    // function handleFilesSelect(e) { handleFiles(this.files); }
+    // Handle file selection via manual upload button
+    const manualUploadBtn = document.getElementById('manual-upload-btn');
+    const hiddenFileInput = document.getElementById('hidden-file-input');
+
+    if (manualUploadBtn && hiddenFileInput) {
+        manualUploadBtn.addEventListener('click', () => {
+            hiddenFileInput.click();
+        });
+
+        hiddenFileInput.addEventListener('change', function() {
+            handleFiles(this.files);
+            this.value = ''; // Reset input to allow selecting the same file again
+        });
+    }
 
     function handleFiles(files) {
         if(files.length === 0) return;

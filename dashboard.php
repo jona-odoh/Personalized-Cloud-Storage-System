@@ -140,7 +140,11 @@ require_once 'includes/header.php';
                     <i class="fa-regular fa-folder-open text-6xl mb-4 opacity-50 text-blue-300 dark:text-blue-900"></i>
                     <h3 class="text-xl font-medium text-gray-600 dark:text-gray-300">Nothing here yet</h3>
                     <?php if ($view === 'my_files'): ?>
-                        <p class="text-sm mt-2 font-medium">Drag and drop files to upload</p>
+                        <p class="text-sm mt-2 font-medium mb-4">Drag and drop files or</p>
+                        <button id="manual-upload-btn" class="px-5 py-2.5 bg-blue-600 hover:bg-blue-700 text-white rounded-lg font-medium shadow-md shadow-blue-500/20 transition flex items-center gap-2">
+                            <i class="fa-solid fa-upload"></i> Upload Files
+                        </button>
+                        <input type="file" id="hidden-file-input" class="hidden" multiple>
                     <?php endif; ?>
                 </div>
             <?php else: ?>
