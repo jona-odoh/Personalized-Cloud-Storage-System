@@ -47,12 +47,14 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     // Handle file selection via manual upload button
-    const manualUploadBtn = document.getElementById('manual-upload-btn');
+    const manualUploadBtns = document.querySelectorAll('.manual-upload-btn');
     const hiddenFileInput = document.getElementById('hidden-file-input');
 
-    if (manualUploadBtn && hiddenFileInput) {
-        manualUploadBtn.addEventListener('click', () => {
-            hiddenFileInput.click();
+    if (manualUploadBtns.length > 0 && hiddenFileInput) {
+        manualUploadBtns.forEach(btn => {
+            btn.addEventListener('click', () => {
+                hiddenFileInput.click();
+            });
         });
 
         hiddenFileInput.addEventListener('change', function() {

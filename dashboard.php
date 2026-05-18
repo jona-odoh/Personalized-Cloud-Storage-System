@@ -77,10 +77,15 @@ require_once 'includes/header.php';
 <div class="flex flex-1 overflow-hidden h-full">
     <!-- Sidebar -->
     <aside class="w-64 bg-white dark:bg-gray-800 border-r border-gray-200 dark:border-gray-700 flex flex-col hidden md:flex flex-shrink-0">
-        <div class="p-4">
-            <button id="new-btn" class="w-full bg-blue-600 hover:bg-blue-700 text-white font-semibold py-2.5 px-4 rounded-lg shadow transition flex items-center justify-center gap-2">
-                <i class="fa-solid fa-plus"></i> New
+        <div class="p-4 flex flex-col gap-2">
+            <button id="new-btn" class="w-full bg-white dark:bg-gray-700 border border-gray-200 dark:border-gray-600 hover:bg-gray-50 dark:hover:bg-gray-600 text-gray-700 dark:text-gray-200 font-semibold py-2.5 px-4 rounded-lg shadow-sm transition flex items-center justify-center gap-2 text-sm">
+                <i class="fa-solid fa-folder-plus text-blue-500"></i> New Folder
             </button>
+            <?php if ($view === 'my_files'): ?>
+            <button class="w-full bg-blue-600 hover:bg-blue-700 text-white font-semibold py-2.5 px-4 rounded-lg shadow transition flex items-center justify-center gap-2 text-sm manual-upload-btn">
+                <i class="fa-solid fa-cloud-arrow-up"></i> Upload File
+            </button>
+            <?php endif; ?>
         </div>
         
         <nav class="flex-1 px-4 space-y-1 overflow-y-auto">
@@ -141,10 +146,9 @@ require_once 'includes/header.php';
                     <h3 class="text-xl font-medium text-gray-600 dark:text-gray-300">Nothing here yet</h3>
                     <?php if ($view === 'my_files'): ?>
                         <p class="text-sm mt-2 font-medium mb-4">Drag and drop files or</p>
-                        <button id="manual-upload-btn" class="px-5 py-2.5 bg-blue-600 hover:bg-blue-700 text-white rounded-lg font-medium shadow-md shadow-blue-500/20 transition flex items-center gap-2">
+                        <button class="px-5 py-2.5 bg-blue-600 hover:bg-blue-700 text-white rounded-lg font-medium shadow-md shadow-blue-500/20 transition flex items-center gap-2 manual-upload-btn">
                             <i class="fa-solid fa-upload"></i> Upload Files
                         </button>
-                        <input type="file" id="hidden-file-input" class="hidden" multiple>
                     <?php endif; ?>
                 </div>
             <?php else: ?>
@@ -214,6 +218,9 @@ require_once 'includes/header.php';
     </main>
 </div>
 
+<!-- Global File Input -->
+<input type="file" id="hidden-file-input" class="hidden" multiple>
+
 <!-- Modal -->
 <div id="create-folder-modal" class="fixed inset-0 bg-gray-900/40 dark:bg-black/60 z-50 hidden flex items-center justify-center backdrop-blur-sm">
     <div class="bg-white dark:bg-gray-800 w-full max-w-sm rounded-2xl shadow-2xl p-6 transform transition-all scale-95 opacity-0 duration-200" id="create-folder-content">
@@ -227,6 +234,6 @@ require_once 'includes/header.php';
 </div>
 
 <?php 
-$extraScripts = '<script src="'.BASE_URL.'/assets/js/app.js"></script><script src="'.BASE_URL.'/assets/js/uploader.js"></script>';
+$extraScripts = '<script src="'.BASE_URL.'/assets/js/app.js?v='.time().'"></script><script src="'.BASE_URL.'/assets/js/uploader.js?v='.time().'"></script>';
 require_once 'includes/footer.php'; 
 ?>

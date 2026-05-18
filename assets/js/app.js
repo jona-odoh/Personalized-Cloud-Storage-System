@@ -133,7 +133,8 @@ document.addEventListener('DOMContentLoaded', () => {
                 { icon: 'star', label: 'Toggle Star', action: () => toggleStar(id) },
                 { type: 'divider' },
                 { icon: 'pen', label: 'Rename', action: () => promptRenameFile(id, name) },
-                { icon: 'trash', label: 'Move to Trash', colorClass: 'text-red-600', action: () => trashFile(id) }
+                { icon: 'trash', label: 'Move to Trash', colorClass: 'text-orange-500', action: () => trashFile(id) },
+                { icon: 'trash-can', label: 'Delete Permanently', colorClass: 'text-red-600', action: () => deleteFilePermanently(id) }
             ]);
         });
     });
@@ -147,8 +148,8 @@ document.addEventListener('DOMContentLoaded', () => {
             showContextMenu(e.clientX, e.clientY, [
                 { icon: 'folder-open', label: 'Open', action: () => window.location.href = `dashboard.php?folder=${id}` },
                 { type: 'divider' },
-                { icon: 'pen', label: 'Rename', action: () => promptRenameFolder(id, currentName) }
-                // Implement trash folder later
+                { icon: 'pen', label: 'Rename', action: () => promptRenameFolder(id, currentName) },
+                { icon: 'trash-can', label: 'Delete Folder', colorClass: 'text-red-600', action: () => deleteFolder(id) }
             ]);
         });
     });
@@ -192,6 +193,26 @@ document.addEventListener('DOMContentLoaded', () => {
             formData.append('action', 'trash');
             formData.append('id', id);
             await fetch('api/file_actions.php', { method: 'POST', body: formData});
+            window.location.reload();
+        }
+    }
+
+    async function deleteFilePermanently(id) {
+        if(confirm('WARNING: Are you sure you want to PERMANENTLY delete this file? This action cannot be undone.')) {
+            let formData = new FormData();
+            formData.append('action', 'delete_permanently');
+            formData.append('id', id);
+            await fetch('api/file_actions.php', { method: 'POST', body: formData});
+            window.location.reload();
+        }
+    }
+
+    async function deleteFolder(id) {
+        if(confirm('WARNING: Are you sure you want to PERMANENTLY delete this folder? All subfolders and files inside it will also be permanently deleted! This action cannot be undone.')) {
+            let formData = new FormData();
+            formData.append('action', 'delete');
+            formData.append('id', id);
+            await fetch('api/folder_actions.php', { method: 'POST', body: formData});
             window.location.reload();
         }
     }

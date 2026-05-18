@@ -28,6 +28,19 @@ if ($action === 'trash') {
      exit;
 }
 
+if ($action === 'delete_permanently') {
+     $id = (int)($_POST['id'] ?? 0);
+     if ($id <= 0) {
+         echo json_encode(['status' => false, 'message' => 'Invalid file ID']);
+         exit;
+     }
+
+     $success = $fileManager->deleteFilePermanently($user['id'], $id);
+     
+     echo json_encode(['status' => $success, 'message' => $success ? 'Permanently deleted' : 'Failed to delete permanently']);
+     exit;
+}
+
 if ($action === 'rename') {
      $id = (int)($_POST['id'] ?? 0);
      $name = trim($_POST['name'] ?? '');

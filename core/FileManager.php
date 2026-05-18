@@ -105,6 +105,30 @@ class FileManager {
         return false;
     }
 
+    public function deleteFilePermanently($userId, $fileId) {
+        $file = $this->getFile($userId, $fileId);
+        if (!$file) {
+            return false;
+        }
+
+        // Unlink physical file
+        $filePath = $this->storagePath . '/' . $userId . '/' . $file['stored_name'];
+        if (file_exists($filePath)) {
+            unlink($filePath);
+        }
+
+        // Reclaim quota space
+        $this->updateUserQuota($userId, -$file['size']);
+
+        // Delete from database
+        $stmt = $this->pdo->prepare("DELETE FROM files WHERE id = ? AND user_id = ?");
+        if ($stmt->execute([$fileId, $userId])) {
+            $this->logActivity($userId, 'delete_file', null, $file['folder_id'], "Permanently deleted: {$file['original_name']}");
+            return true;
+        }
+        return false;
+    }
+
     private function logActivity($userId, $action, $fileId, $folderId, $description) {
         $stmt = $this->pdo->prepare("INSERT INTO activities (user_id, action, file_id, folder_id, description) VALUES (?, ?, ?, ?, ?)");
         $stmt->execute([$userId, $action, $fileId, $folderId, $description]);

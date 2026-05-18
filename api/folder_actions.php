@@ -42,4 +42,16 @@ if ($action === 'rename') {
      exit;
 }
 
+if ($action === 'delete') {
+     $id = (int)($_POST['id'] ?? 0);
+     if ($id <= 0) {
+         echo json_encode(['status' => false, 'message' => 'Invalid folder ID']);
+         exit;
+     }
+
+     $success = $folderManager->deleteFolder($user['id'], $id);
+     echo json_encode(['status' => $success, 'message' => $success ? 'Folder permanently deleted' : 'Failed to delete folder']);
+     exit;
+}
+
 echo json_encode(['status' => false, 'message' => 'Invalid action']);
